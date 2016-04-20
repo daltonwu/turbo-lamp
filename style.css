@@ -1,0 +1,15 @@
+html {
+  font-family: Verdana, sans-serif;
+}
+canvas {
+  border: 1px solid black;
+  cursor: none;
+}
+.left {
+  text-align: left;
+  padding-right: 5em;
+}
+.right {
+  text-align: right;
+  padding-left: 5em;
+}
