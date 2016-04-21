@@ -5,6 +5,10 @@
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+var balls = [new Ball()];
+var frameId = 0;
+var isMoving = true;
+var movementButton = document.getElementById("movement");
 
 function rand_range(foo, bar) {
     /**
@@ -23,8 +27,8 @@ function Ball() {
     this.r = rand_range(50, 100);
     this.x = rand_range(0, canvas.width);
     this.y = rand_range(0, canvas.width);
-    this.v_x = rand_range(10, 50);
-    this.v_y = rand_range(10, 50);
+    this.v_x = rand_range(1, 30);
+    this.v_y = rand_range(1, 30);
     
     // random color (hex)
     this.color = "#";
@@ -32,7 +36,7 @@ function Ball() {
         this.color += rand_range(0, 256).toString(16);
     }
     
-    this.draw = function {
+    this.draw = function() {
         ctx.beginPath();
         ctx.fillStyle = this.color;
         ctx.strokeStyle = "black";
@@ -42,5 +46,35 @@ function Ball() {
     };
 }
 
-function toggleMovement() {
+function tick(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    balls.forEach(function(foo){
+	if(foo.x - foo.r <= 0 || foo.x + foo.r >= canvas.width){
+	    foo.v_x *= -1;
+	}
+	if(foo.y - foo.r <= 0 || foo.y + foo.r >= canvas.height){
+	    foo.v_y *= -1;
+	}
+	foo.x += foo.v_x;
+	foo.y += foo.v_y;
+	foo.draw();
+    });
+    if(isMoving){
+	frameId = window.requestAnimationFrame(tick);
+    }
 }
+
+function addBall(){
+    balls.push(new Ball());
+}
+
+function removeBall(){
+    balls.pop();
+}
+
+function toggleMovement() {
+    isMoving = !isMoving;
+    movementButton.innerHTML = isMoving ? "Stop" : "Start";
+    tick();
+}
+
