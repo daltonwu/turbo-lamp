@@ -6,12 +6,12 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body>
-<canvas id="canvas" height="700" width="700"></canvas>
+<body onload="toggleMovement()" onkeypress="key(event)">
+<canvas id="canvas" height="600" width="600"></canvas>
 <br>
-<button onclick="addBall()">Add Ball</button>
-<button onclick="removeBall()">Remove Ball</button>
-<button id="movement" onclick="toggleMovement()">Stop</button>
+<button onclick="addBall()"><u>A</u>dd Ball</button>
+<button onclick="removeBall()"><u>R</u>emove Ball</button>
+<button id="movement" onclick="toggleMovement()"><u>S</u>tart</button>
 <input type="color" id="color" oninput="updateColor()"></input>
 <script src="script.js"></script>
 </body>

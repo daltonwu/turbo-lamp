@@ -7,7 +7,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var balls = [new Ball()];
 var frameId = 0;
-var isMoving = true;
+var isMoving = false;
 var movementButton = document.getElementById("movement");
 
 function rand_range(foo, bar) {
@@ -24,43 +24,48 @@ function rand_range(foo, bar) {
 }
 
 function Ball() {
-    this.r = rand_range(50, 100);
-    this.x = rand_range(0, canvas.width);
-    this.y = rand_range(0, canvas.width);
-    this.v_x = rand_range(1, 30);
-    this.v_y = rand_range(1, 30);
+    this.r = rand_range(24, 64);
+    this.m = this.r * this.r; // mass proportional to area
+    this.x = rand_range(this.r, canvas.width-this.r);
+    this.y = rand_range(this.r, canvas.height-this.r);
+    this.v_x = rand_range(-4, 4);
+    this.v_y = rand_range(-4, 4);
     
-    // random color (hex)
-    this.color = "#";
+    // random color (rgb)
+    this.color = "rgb(";
     for(i = 0; i < 3; i++) {
-        this.color += rand_range(0, 256).toString(16);
+        this.color += rand_range(0, 256) + (i != 2 ? ", " : ")");
     }
     
     this.draw = function() {
         ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 0.5;
         ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI);
+        ctx.fillStyle = this.color;
         ctx.fill();
+        // tbh, border around the balls looks ugly
+        /*ctx.strokeStyle = "black";
+        ctx.lineWidth = 0.5;
+        ctx.stroke();*/
     };
 }
 
 function tick(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    balls.forEach(function(foo){
-	if(foo.x - foo.r <= 0 || foo.x + foo.r >= canvas.width){
-	    foo.v_x *= -1;
-	}
-	if(foo.y - foo.r <= 0 || foo.y + foo.r >= canvas.height){
-	    foo.v_y *= -1;
-	}
-	foo.x += foo.v_x;
-	foo.y += foo.v_y;
-	foo.draw();
+    
+    balls.forEach(function(foo) {
+    	if(foo.x <= foo.r || foo.x >= canvas.width - foo.r) {
+    	    foo.v_x *= -1;
+    	}
+    	if(foo.y <= foo.r || foo.y >= canvas.height - foo.r) {
+    	    foo.v_y *= -1;
+    	}
+    	foo.x += foo.v_x;
+    	foo.y += foo.v_y;
+    	foo.draw();
     });
+    
     if(isMoving){
-	frameId = window.requestAnimationFrame(tick);
+    	frameId = window.requestAnimationFrame(tick);
     }
 }
 
@@ -74,7 +79,20 @@ function removeBall(){
 
 function toggleMovement() {
     isMoving = !isMoving;
-    movementButton.innerHTML = isMoving ? "Stop" : "Start";
+    movementButton.innerHTML = isMoving ? "<u>S</u>top" : "<u>S</u>tart";
     tick();
 }
 
+function key(event) {
+    switch(event.keyCode || event.which) {
+        case 65: case 97: // A
+            addBall();
+            break;
+        case 82: case 114: // R
+            removeBall();
+            break;
+        case 83: case 115: // S
+            toggleMovement();
+            break;
+    }
+}
