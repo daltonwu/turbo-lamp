@@ -8,6 +8,7 @@ var ctx = canvas.getContext("2d");
 var balls = [new Ball()];
 var frameId = 0;
 var isMoving = false;
+var isFiltering = false;
 var movementButton = document.getElementById("movement");
 
 function rand_range(foo, bar) {
@@ -58,18 +59,32 @@ function drawAll() {
 
 function tick(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    balls.forEach(function(foo) {
-    	if(foo.x <= foo.r || foo.x >= canvas.width - foo.r) {
-    	    foo.v_x *= -1;
+    //filtering
+    if(isFiltering){
+	balls.filter(function(ball){
+	    return ball.r < 40;
+	}).map(function(ball){
+	    //Makes balls REALLY FAST!
+	    ball.x += balls.length * ball.v_x;
+    	    ball.y += balls.length * ball.v_y;
+	});
+    }
+    else{
+	balls.forEach(function(ball){
+    	    ball.x += ball.v_x;
+    	    ball.y += ball.v_y;
+	});
+    }
+    balls.forEach(function(ball) {
+    	if(ball.x <= ball.r || ball.x >= canvas.width - ball.r) {
+    	    ball.v_x *= -1;
     	}
-    	if(foo.y <= foo.r || foo.y >= canvas.height - foo.r) {
-    	    foo.v_y *= -1;
+    	if(ball.y <= ball.r || ball.y >= canvas.height - ball.r) {
+    	    ball.v_y *= -1;
     	}
-    	foo.x += foo.v_x;
-    	foo.y += foo.v_y;
-    	foo.draw();
+	ball.draw();
     });
+    
     
     if(isMoving){
     	frameId = window.requestAnimationFrame(tick);
@@ -104,4 +119,14 @@ function key(event) {
             toggleMovement();
             break;
     }
+}
+
+function toggleFilter(){
+    isFiltering = !isFiltering;
+}
+
+function flock(){
+    balls.forEach(function(ball){
+	
+    });
 }
