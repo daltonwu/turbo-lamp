@@ -49,6 +49,13 @@ function Ball() {
     };
 }
 
+function drawAll() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    balls.forEach(function(ball) {
+        ball.draw();
+    });
+};
+
 function tick(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -71,10 +78,12 @@ function tick(){
 
 function addBall(){
     balls.push(new Ball());
+    drawAll();
 }
 
 function removeBall(){
     balls.pop();
+    drawAll();
 }
 
 function toggleMovement() {
