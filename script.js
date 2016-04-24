@@ -7,7 +7,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var balls = [new Ball()];
 var frameId = 0;
-var isMoving = false;
+var isMoving = true;
 var isFiltering = false;
 var movementButton = document.getElementById("movement");
 
@@ -64,9 +64,8 @@ function tick(){
 	balls.filter(function(ball){
 	    return ball.r < 40;
 	}).map(function(ball){
-	    //Makes balls REALLY FAST!
-	    ball.x += balls.length * ball.v_x;
-    	    ball.y += balls.length * ball.v_y;
+	    ball.x += ball.v_x;
+    	    ball.y += ball.v_y;
 	});
     }
     else{
