@@ -112,6 +112,12 @@ function key(event) {
         case 65: case 97: // A
             addBall();
             break;
+        case 73: case 105: // I
+            toggleFilter();
+            break;
+        case 79: case 111: // O
+            flock();
+            break;
         case 82: case 114: // R
             removeBall();
             break;
@@ -127,6 +133,8 @@ function toggleFilter(){
 
 function flock(){
     balls.forEach(function(ball){
-	
+        var v = Math.sqrt(ball.v_x * ball.v_x + ball.v_y * ball.v_y);
+	    ball.v_x = v / Math.sqrt(2);
+        ball.v_y = v / Math.sqrt(2);
     });
 }
