@@ -131,9 +131,10 @@ function toggleFilter(){
 }
 
 function flock(){
-    balls.forEach(function(ball){
+    balls.map(function(ball){
         var v = Math.sqrt(ball.v_x * ball.v_x + ball.v_y * ball.v_y);
 	    ball.v_x = v / Math.sqrt(2);
         ball.v_y = v / Math.sqrt(2);
+        return ball;
     });
 }
