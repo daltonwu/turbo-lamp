@@ -100,6 +100,10 @@ function removeBall(){
     drawAll();
 }
 
+function clearBalls() {
+    balls = [];
+}
+
 function toggleMovement() {
     isMoving = !isMoving;
     movementButton.innerHTML = isMoving ? "<u>S</u>top" : "<u>S</u>tart";
@@ -108,19 +112,22 @@ function toggleMovement() {
 
 function key(event) {
     switch(event.keyCode || event.which) {
-        case 65: case 97: // A
+        case 65: case 97: // Aa
             addBall();
             break;
-        case 73: case 105: // I
+        case 67: case 99: // Cc
+            clearBalls();
+            break;
+        case 73: case 105: // Ii
             toggleFilter();
             break;
-        case 79: case 111: // O
+        case 79: case 111: // Oo
             flock();
             break;
-        case 82: case 114: // R
+        case 82: case 114: // Rr
             removeBall();
             break;
-        case 83: case 115: // S
+        case 83: case 115: // Ss
             toggleMovement();
             break;
     }
